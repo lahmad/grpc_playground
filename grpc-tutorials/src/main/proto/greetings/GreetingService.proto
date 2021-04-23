@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package greetings;
+option java_multiple_files = true;
+option java_package = "com.dev.luqman.greetings";
+
+message Greeting {
+  string first_name = 1;
+  string last_name = 2;
+}
+
+message GreetingRequest {
+  Greeting greeting = 1;
+}
+
+message GreetingResponse {
+  string result = 1;
+}
+
+message GreetManyTimesRequest {
+  Greeting greeting = 1;
+}
+
+message GreetManyTimesResponse {
+  string result = 1;
+}
+
+message LongGreetRequest {
+  Greeting greetings = 1;
+}
+
+message LongGreetResponse {
+  string result = 1;
+}
+
+
+message GreetEveryOneRequest {
+  Greeting greetings = 1;
+}
+
+message GreetEveryOneResponse {
+  string result = 1;
+}
+
+service GreetingService {
+
+  // This is a Unary Request/Response
+  rpc greet(GreetingRequest) returns (GreetingResponse) {};
+
+  // This is a server streaming API
+  // Client will request once and server will response multiple times
+  // This is a good candidate for Push Server Notifications
+  rpc greetManyTimes(GreetManyTimesRequest) returns (stream GreetManyTimesResponse) {};
+
+  // This is a client streaming API
+  // Client will request multiple times
+  // Server will response once
+  // This is a good candidate for Client PUSH
+  rpc longGreet(stream LongGreetRequest) returns(LongGreetResponse) {};
+
+  // This is a bidirectional api i.e streaming client/server
+  // Suitable for Chat client/server - All messages are broadcasted
+  rpc greetEveryOne(stream GreetEveryOneRequest) returns (stream GreetEveryOneResponse){};
+}
